@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correios Rastro Escala</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/caixa-de-entrega.png">
+
+</head>
+<body>
+    <div class="container">
+        <h2>
+            CorreiosActiveCampaign-SistemV1
+            <span id="statusIndicator" class="indicator inactive"></span>
+        </h2>
+        
+        <button id="toggleButton" class="inactive">Desativado</button>
+        <button id="saveButton">Salvar</button>
+
+        <!-- Tabela para mostrar os dados dos Correios -->
+        <table id="correiosTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Email do Cliente</th>
+                    <th>Código de Rastreio</th>
+                    <th>Etapa do Percurso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linha de exemplo -->
+                <tr>
+                    <td><input type="text" class="email-input" value="exemplo@gmail.com" /></td>
+                    <td><input type="text" class="codigo-input" value="BR12345678910BR" /></td>
+                    <td><input type="text" class="etapa-input" value="Ultima etapa o percurso | Entrege ao destinatário" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
