@@ -10,27 +10,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rota para obter todos os dados dos Correios
-app.get('/get-all-correios-data', async (req, res) => {
+// Rota para obter dados do rastreio
+app.post('/get-rastreio', async (req, res) => {
+    const { codigoRastreio } = req.body;
+
+    if (!codigoRastreio) {
+        return res.status(400).send({ message: 'Código de rastreio não fornecido.' });
+    }
+
     try {
-        // Supondo que você tenha uma lista de e-mails para consultar todos os dados
-        const emails = ['email1@example.com', 'email2@example.com']; // Substitua com a lista real de e-mails
+        const response = await axios.get(`https://api.correios.com.br/srorastro/v1/objetos/${codigoRastreio}`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.CORREIOS_API_TOKEN}`
+            }
+        });
 
-        const dados = await Promise.all(emails.map(async (email) => {
-            const correiosResponse = await axios.get('https://api.correios.com.br/srorastro/v1/objetos', {
-                params: { email },
-            });
+        // Adiciona um log para ver a resposta completa
+        console.log('Resposta da API dos Correios:', response.data);
 
-            const customFieldValue = correiosResponse.data.etapa; // Etapa do percurso
-            const codigoRastreio = correiosResponse.data.codigo; // Código de rastreio
+        const dados = response.data;
 
-            return { email, customFieldValue, codigoRastreio };
-        }));
-
-        res.status(200).send({ success: true, dados });
+        if (dados && dados.objetos && dados.objetos.length > 0) {
+            const eventos = dados.objetos[0].eventos;
+            const etapa = eventos.length > 0 ? eventos[0].descricao : 'Dados não disponíveis';
+            res.status(200).send({ etapa });
+        } else {
+            res.status(404).send({ message: 'Dados não encontrados para o código de rastreio fornecido.' });
+        }
     } catch (error) {
-        console.error('Erro ao consultar os dados dos Correios:', error);
-        res.status(500).send({ success: false, message: 'Erro ao consultar os dados dos Correios.' });
+        console.error('Erro ao consultar os dados dos Correios:', error.response ? error.response.data : error.message);
+        res.status(500).send({ message: 'Erro ao buscar dados do rastreio.' });
     }
 });
 
