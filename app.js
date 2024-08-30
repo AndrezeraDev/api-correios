@@ -25,16 +25,28 @@ app.post('/get-rastreio', async (req, res) => {
             }
         });
 
-        // Adiciona um log para ver a resposta completa
-        console.log('Resposta da API dos Correios:', response.data);
+        console.log('Resposta da API dos Correios:', JSON.stringify(response.data, null, 2));
 
         const dados = response.data;
 
-        if (dados && dados.objetos && dados.objetos.length > 0) {
+        if (dados && dados.objetos && Array.isArray(dados.objetos) && dados.objetos.length > 0) {
             const eventos = dados.objetos[0].eventos;
-            const etapa = eventos.length > 0 ? eventos[0].descricao : 'Dados não disponíveis';
-            res.status(200).send({ etapa });
+            
+            if (eventos && eventos.length > 0) {
+                const log = eventos.map(evento => {
+                    const descricao = evento.descricao;
+                    const unidadeEndereco = evento.unidade && evento.unidade.endereco ? 
+                        ` - Cidade: ${evento.unidade.endereco.cidade}, UF: ${evento.unidade.endereco.uf}` : '';
+                    return `${descricao}${unidadeEndereco}`;
+                }).join(' | ');
+
+                const etapa = eventos[0].descricao;
+                res.status(200).send({ etapa, log });
+            } else {
+                res.status(404).send({ message: 'Log não disponível.' });
+            }
         } else {
+            console.log('Dados não encontrados ou estrutura inesperada:', dados);
             res.status(404).send({ message: 'Dados não encontrados para o código de rastreio fornecido.' });
         }
     } catch (error) {
@@ -43,15 +55,16 @@ app.post('/get-rastreio', async (req, res) => {
     }
 });
 
+
 // Rota para atualizar o campo personalizado no ActiveCampaign
 app.post('/update-contact', async (req, res) => {
-    const { email, customFieldValue } = req.body;
+    const { email, etapa, log } = req.body;
 
-    console.log('Dados recebidos:', { email, customFieldValue });
+    console.log('Dados recebidos:', { email, etapa, log });
 
     try {
-        if (!email || !customFieldValue) {
-            return res.status(400).send({ message: 'Email ou valor do campo personalizado ausente.' });
+        if (!email || !etapa || log === undefined) {
+            return res.status(400).send({ message: 'Email, etapa ou log ausente.' });
         }
 
         const contactResponse = await axios.get('https://vendaseguro.api-us1.com/api/3/contacts', {
@@ -69,30 +82,40 @@ app.post('/update-contact', async (req, res) => {
 
         const contactId = contactResponse.data.contacts[0].id;
 
-        const customFieldData = {
-            fieldValue: {
+        const fieldData = [
+            {
                 contact: contactId,
                 field: '93',
-                value: customFieldValue
+                value: etapa
+            },
+            {
+                contact: contactId,
+                field: '97',
+                value: log
             }
-        };
+        ];
 
-        const fieldResponse = await axios.post('https://vendaseguro.api-us1.com/api/3/fieldValues', customFieldData, {
-            headers: {
-                'Api-Token': process.env.ACTIVECAMPAIGN_API_TOKEN,
-                'Content-Type': 'application/json'
+        for (const field of fieldData) {
+            try {
+                await axios.post('https://vendaseguro.api-us1.com/api/3/fieldValues', {
+                    fieldValue: field
+                }, {
+                    headers: {
+                        'Api-Token': process.env.ACTIVECAMPAIGN_API_TOKEN,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            } catch (fieldError) {
+                console.error(`Erro ao atualizar o campo ${field.field} para o contato ${contactId}:`, fieldError.response ? fieldError.response.data : fieldError.message);
             }
-        });
+        }
 
-        console.log('Resposta da API de atualização de campo:', fieldResponse.data);
-
-        res.status(200).send({ message: 'Campo personalizado atualizado com sucesso!' });
+        res.status(200).send({ message: 'Campos personalizados atualizados com sucesso!✅' });
     } catch (error) {
         console.error('Update Contact Error:', error.response ? error.response.data : error.message);
-        res.status(500).send({ message: 'Ocorreu um erro ao atualizar o campo personalizado.' });
+        res.status(500).send({ message: 'Ocorreu um erro ao atualizar os campos personalizados.❌' });
     }
 });
-
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });

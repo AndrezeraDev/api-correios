@@ -14,11 +14,12 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    padding: 10px;
+    margin: 0px 50px;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    width: 60vw;
+    width: 70vw;
 }
 
 label {
@@ -143,6 +144,8 @@ p {
 
 table {
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -161,6 +164,41 @@ th {
 }
 
 td input {
-    width: 100%;
-    padding: 4px 30px;
+    width: calc(100% - 16px); /* Ajusta a largura para não ocupar 100% exato e permitir padding */
+    padding: 8px; /* Aumenta o padding para melhorar a visualização */
+    box-sizing: border-box; /* Inclui o padding na largura total */
+}
+
+#correiosTable {
+    table-layout: fixed; /* Faz com que as colunas tenham larguras fixas */
+}
+
+#correiosTable td,
+#correiosTable th {
+    min-width: 150px; /* Define uma largura mínima para cada célula */
+}
+
+#correiosTable th,
+#correiosTable td {
+    padding: 10px;
+}
+
+#correiosTable th:nth-child(1),
+#correiosTable td:nth-child(1) {
+    width: 20%; /* Ajuste a largura da coluna do email */
+}
+
+#correiosTable th:nth-child(2),
+#correiosTable td:nth-child(2) {
+    width: 20%; /* Ajuste a largura da coluna do código de rastreio */
+}
+
+#correiosTable th:nth-child(3),
+#correiosTable td:nth-child(3) {
+    width: 25%; /* Ajuste a largura da coluna da etapa */
+}
+
+#correiosTable th:nth-child(4),
+#correiosTable td:nth-child(4) {
+    width: 35%; /* Ajuste a largura da coluna do log */
 }

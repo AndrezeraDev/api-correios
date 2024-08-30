@@ -7,6 +7,7 @@ $(document).ready(function() {
             $(this).removeClass('inactive').addClass('active').text('Ativo');
             $('#correiosTable').show();
             $('#statusIndicator').removeClass('inactive').addClass('active');
+            atualizarTodosOsRastreios(); // Atualizar todos os rastreios automaticamente ao ativar
         } else {
             $(this).removeClass('active').addClass('inactive').text('Desativado');
             $('#correiosTable').hide();
@@ -14,48 +15,54 @@ $(document).ready(function() {
         }
     });
 
-    // Evento para atualizar a etapa do percurso automaticamente
-    $('#correiosTable').on('input', '.codigo-input', function() {
-        const codigoRastreio = $(this).val();
-        const etapaInput = $(this).closest('tr').find('.etapa-input');
-
-        if (codigoRastreio) {
-            $.ajax({
-                url: '/get-rastreio',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ codigoRastreio: codigoRastreio }),
-                success: function(response) {
-                    console.log('Resposta do servidor:', response); // Log para depuração
-                    if (response.etapa) {
-                        etapaInput.val(response.etapa);
-                    } else {
-                        etapaInput.val('Dados não disponíveis.');
+    function atualizarTodosOsRastreios() {
+        const rows = $('#correiosTable tbody tr');
+    
+        rows.each(function() {
+            const row = $(this);
+            const codigoRastreio = row.find('.codigo-input').val();
+            const etapaInput = row.find('.etapa-input');
+            const logInput = row.find('.log-input');
+    
+            if (codigoRastreio) {
+                $.ajax({
+                    url: '/get-rastreio',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ codigoRastreio: codigoRastreio }),
+                    success: function(response) {
+                        if (response.etapa) {
+                            etapaInput.val(response.etapa);
+                            logInput.val(response.log || 'Log não disponível.');
+                        } else {
+                            etapaInput.val('Dados não disponíveis.');
+                            logInput.val('Log não disponível.');
+                        }
+                    },
+                    error: function() {
+                        etapaInput.val('Erro ao buscar dados.');
+                        logInput.val('Erro ao buscar dados.');
                     }
-                },
-                error: function() {
-                    etapaInput.val('Erro ao buscar dados.');
-                }
-            });
-        } else {
-            etapaInput.val('');
-        }
-    });
+                });
+            }
+        });
+    }
 
     $('#saveButton').on('click', function() {
         const rows = $('#correiosTable tbody tr');
         let promises = [];
-
+    
         rows.each(function() {
             const row = $(this);
             const email = row.find('.email-input').val();
             const etapa = row.find('.etapa-input').val();
-
-            if (email && etapa) {
-                promises.push(atualizarActiveCampaign(email, etapa));
+            const log = row.find('.log-input').val();  // Obtenha o valor do log
+    
+            if (email && etapa && log) {
+                promises.push(atualizarActiveCampaign(email, etapa, log));
             }
         });
-
+    
         Promise.all(promises)
             .then(() => {
                 alert('Todos os campos personalizados foram atualizados com sucesso!');
@@ -65,16 +72,18 @@ $(document).ready(function() {
                 alert('Erro ao atualizar alguns campos personalizados.');
             });
     });
-
-    function atualizarActiveCampaign(email, customFieldValue) {
-        console.log('Enviando para atualização:', { email, customFieldValue });
+    
+    function atualizarActiveCampaign(email, etapa, log) {
+        console.log('Enviando dados para atualização:', { email, etapa, log });
+    
         return $.ajax({
             url: '/update-contact',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
                 email: email,
-                customFieldValue: customFieldValue
+                etapa: etapa,
+                log: log
             }),
             success: function(response) {
                 console.log(`Atualizado com sucesso para o email: ${email}`, response);
