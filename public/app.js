@@ -7,11 +7,13 @@ $(document).ready(function() {
             $(this).removeClass('inactive').addClass('active').text('Ativo');
             $('#correiosTable').show();
             $('#statusIndicator').removeClass('inactive').addClass('active');
+            $('.background-image').addClass('show-image'); // Exibe a imagem
             atualizarTodosOsRastreios(); // Atualizar todos os rastreios automaticamente ao ativar
         } else {
             $(this).removeClass('active').addClass('inactive').text('Desativado');
             $('#correiosTable').hide();
             $('#statusIndicator').removeClass('active').addClass('inactive');
+            $('.background-image').removeClass('show-image'); // Oculta a imagem
         }
     });
 

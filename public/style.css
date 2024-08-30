@@ -9,7 +9,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 8rem;
+    padding-top: 2rem;
+    position: relative; /* Permite o posicionamento absoluto dos elementos filhos */
 }
 .container {
     display: flex;
@@ -201,4 +202,21 @@ td input {
 #correiosTable th:nth-child(4),
 #correiosTable td:nth-child(4) {
     width: 35%; /* Ajuste a largura da coluna do log */
+}
+
+.background-image {
+    position: absolute;
+    bottom: 0px;
+    right: 0%;
+    height: auto; /* Mantém a proporção da imagem */
+    width: 440px; /* Ajuste o tamanho da imagem conforme necessário */
+    height: auto; /* Mantém a proporção da imagem */
+    z-index: -1; /* Garante que a imagem fique atrás do conteúdo principal */
+    opacity: 95%;
+    display: none; /* Inicialmente oculta */
+}
+
+/* Classe para exibir a imagem */
+.show-image {
+    display: block;
 }
