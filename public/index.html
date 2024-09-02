@@ -15,7 +15,7 @@
         </h2>
         
         <button id="toggleButton" class="inactive">Desativado</button>
-        <button id="saveButton">Salvar</button>
+        <!--<button id="saveButton">Salvar</button>-->
 
         <!-- Tabela para mostrar os dados dos Correios -->
         <table id="correiosTable" style="display: none;">
@@ -30,8 +30,8 @@
             <tbody>
                 <!-- Linha de exemplo -->
                 <tr>
-                    <td><input type="text" class="email-input" value="aldss.com@gmail.com" /></td>
-                    <td><input type="text" class="codigo-input" value="QS196135282BR" /></td>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
                     <td><input type="text" class="log-input" value=""  /></td> <!-- Campo para exibir o log -->
                 </tr>
@@ -91,10 +91,16 @@
                 </tr>
             </tbody>
         </table>
+        <!-- Container para o log -->
+        <div id="logContainer" style="display: none;">
+            <h3>Log do Sistema:</h3>
+            <pre id="logOutput" style="background-color: #333; color: #ddd; border-radius: 8px; padding: 10px; border: 1px solid #ddd; height: 200px; overflow-y: auto;"></pre>
+        </div>
+    </div>
     </div>
     <img src="assets/undraw_Order_delivered_re_v4ab-removebg-preview.png" alt="..." class="background-image">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

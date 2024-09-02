@@ -58,13 +58,13 @@ app.post('/get-rastreio', async (req, res) => {
 
 // Rota para atualizar o campo personalizado no ActiveCampaign
 app.post('/update-contact', async (req, res) => {
-    const { email, etapa, log } = req.body;
+    const { email, codigoRastreio, etapa, log } = req.body;
 
-    console.log('Dados recebidos:', { email, etapa, log });
+    console.log('Dados recebidos:', { email, codigoRastreio, etapa, log });
 
     try {
-        if (!email || !etapa || log === undefined) {
-            return res.status(400).send({ message: 'Email, etapa ou log ausente.' });
+        if (!email || !codigoRastreio || !etapa || log === undefined) {
+            return res.status(400).send({ message: 'Email, código de rastreio, etapa ou log ausente.' });
         }
 
         const contactResponse = await axios.get('https://vendaseguro.api-us1.com/api/3/contacts', {
@@ -85,13 +85,18 @@ app.post('/update-contact', async (req, res) => {
         const fieldData = [
             {
                 contact: contactId,
-                field: '93',
+                field: '93', // ID do campo personalizado para etapa
                 value: etapa
             },
             {
                 contact: contactId,
-                field: '97',
+                field: '97', // ID do campo personalizado para log
                 value: log
+            },
+            {
+                contact: contactId,
+                field: '98', // ID do campo personalizado para código de rastreio
+                value: codigoRastreio
             }
         ];
 
@@ -116,6 +121,7 @@ app.post('/update-contact', async (req, res) => {
         res.status(500).send({ message: 'Ocorreu um erro ao atualizar os campos personalizados.❌' });
     }
 });
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });

@@ -220,3 +220,25 @@ td input {
 .show-image {
     display: block;
 }
+
+#logContainer {
+    width: 80%;
+    margin-top: 32px;
+}
+
+.console-log {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#logOutput {
+    white-space: pre-wrap;
+}
