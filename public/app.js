@@ -86,7 +86,17 @@ $(document).ready(function() {
             addLog('Botão de atualização manual acionado.');
             atualizarTodosOsRastreios();
         });
+
+        
     }
+
+    // Configura um intervalo para auto refresh a cada 30 minutos (1800000 ms)
+    setInterval(function() {
+        if (isActive) { // Verifica se o sistema está ativado
+            addLog('♻️Atualização automática acionada por auto refresh (30 minutos).');
+            atualizarTodosOsRastreios();
+        }
+    }, 1800000); // 1800000 ms = 30 minutos
 
     // Função para salvar os dados no ActiveCampaign
     async function salvarNoActiveCampaign(row) {
