@@ -16,11 +16,11 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px;
-    margin: 0px 50px;
+    margin: 0px 10px;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    width: 70vw;
+    width: 95vw;
 }
 
 label {
@@ -147,6 +147,7 @@ table {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    margin-bottom: 35px;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -165,18 +166,18 @@ th {
 }
 
 td input {
-    width: calc(100% - 16px); /* Ajusta a largura para não ocupar 100% exato e permitir padding */
-    padding: 8px; /* Aumenta o padding para melhorar a visualização */
-    box-sizing: border-box; /* Inclui o padding na largura total */
+    width: calc(100% - 16px); 
+    padding: 8px; 
+    box-sizing: border-box; 
 }
 
 #correiosTable {
-    table-layout: fixed; /* Faz com que as colunas tenham larguras fixas */
+    table-layout: fixed; 
 }
 
 #correiosTable td,
 #correiosTable th {
-    min-width: 150px; /* Define uma largura mínima para cada célula */
+    min-width: 150px; 
 }
 
 #correiosTable th,
@@ -186,43 +187,53 @@ td input {
 
 #correiosTable th:nth-child(1),
 #correiosTable td:nth-child(1) {
-    width: 20%; /* Ajuste a largura da coluna do email */
+    width: 35%; 
 }
 
 #correiosTable th:nth-child(2),
 #correiosTable td:nth-child(2) {
-    width: 20%; /* Ajuste a largura da coluna do código de rastreio */
+    width: 20%; 
 }
 
 #correiosTable th:nth-child(3),
 #correiosTable td:nth-child(3) {
-    width: 25%; /* Ajuste a largura da coluna da etapa */
+    width: 25%; 
 }
 
 #correiosTable th:nth-child(4),
 #correiosTable td:nth-child(4) {
-    width: 35%; /* Ajuste a largura da coluna do log */
+    width: 25%; 
+}
+
+#correiosTable th:nth-child(5),
+#correiosTable td:nth-child(5) {
+    width: 25%; 
+}
+
+#correiosTable th:nth-child(6),
+#correiosTable td:nth-child(6) {
+    width: 35%; 
 }
 
 .background-image {
     position: absolute;
     bottom: 0px;
     right: 0%;
-    height: auto; /* Mantém a proporção da imagem */
-    width: 440px; /* Ajuste o tamanho da imagem conforme necessário */
-    height: auto; /* Mantém a proporção da imagem */
-    z-index: -1; /* Garante que a imagem fique atrás do conteúdo principal */
+    height: auto; 
+    width: 440px; 
+    height: auto; 
+    z-index: -1; 
     opacity: 95%;
-    display: none; /* Inicialmente oculta */
+    display: none; 
 }
 
-/* Classe para exibir a imagem */
+
 .show-image {
     display: block;
 }
 
 #logContainer {
-    width: 80%;
+    width: 65%;
     margin-top: 32px;
 }
 

@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rota para obter dados do rastreio
+// Rota para obter dados do rastreio
 app.post('/get-rastreio', async (req, res) => {
     const { codigoRastreio } = req.body;
 
@@ -41,7 +42,12 @@ app.post('/get-rastreio', async (req, res) => {
                 }).join(' | ');
 
                 const etapa = eventos[0].descricao;
-                res.status(200).send({ etapa, log });
+
+                // Extraindo a data e hora da última atualização e a data prevista de entrega
+                const dataHoraAtualizacao = eventos[0].dtHrCriado;
+                const dataPrevistaEntrega = dados.objetos[0].dtPrevista;
+
+                res.status(200).send({ etapa, log, dataHoraAtualizacao, dataPrevistaEntrega });
             } else {
                 res.status(404).send({ message: 'Log não disponível.' });
             }
@@ -55,12 +61,11 @@ app.post('/get-rastreio', async (req, res) => {
     }
 });
 
-
 // Rota para atualizar o campo personalizado no ActiveCampaign
 app.post('/update-contact', async (req, res) => {
-    const { email, codigoRastreio, etapa, log } = req.body;
+    const { email, codigoRastreio, etapa, log, dataHoraAtualizacao, dataPrevistaEntrega } = req.body;
 
-    console.log('Dados recebidos:', { email, codigoRastreio, etapa, log });
+    console.log('Dados recebidos:', { email, codigoRastreio, etapa, log, dataHoraAtualizacao, dataPrevistaEntrega });
 
     try {
         if (!email || !codigoRastreio || !etapa || log === undefined) {
@@ -82,28 +87,40 @@ app.post('/update-contact', async (req, res) => {
 
         const contactId = contactResponse.data.contacts[0].id;
 
+        // Formatando datas
+        const formatDate = (date) => date ? new Date(date).toISOString() : null;
+
         const fieldData = [
             {
-                contact: contactId,
                 field: '93', // ID do campo personalizado para etapa
                 value: etapa
             },
             {
-                contact: contactId,
                 field: '97', // ID do campo personalizado para log
                 value: log
             },
             {
-                contact: contactId,
                 field: '98', // ID do campo personalizado para código de rastreio
                 value: codigoRastreio
+            },
+            {
+                field: '99', // ID do campo personalizado para Data e Hora da Última Atualização
+                value: formatDate(dataHoraAtualizacao)
+            },
+            {
+                field: '100', // ID do campo personalizado para Data Prevista de Entrega
+                value: formatDate(dataPrevistaEntrega)
             }
         ];
 
         for (const field of fieldData) {
             try {
                 await axios.post('https://vendaseguro.api-us1.com/api/3/fieldValues', {
-                    fieldValue: field
+                    fieldValue: {
+                        contact: contactId,
+                        field: field.field,
+                        value: field.value
+                    }
                 }, {
                     headers: {
                         'Api-Token': process.env.ACTIVECAMPAIGN_API_TOKEN,
@@ -111,16 +128,17 @@ app.post('/update-contact', async (req, res) => {
                     }
                 });
             } catch (fieldError) {
-                console.error(`Erro ao atualizar o campo ${field.field} para o contato ${contactId}:`, fieldError.response ? fieldError.response.data : fieldError.message);
+                console.error(`Erro ao atualizar o campo ${field.field}:`, fieldError.response ? fieldError.response.data : fieldError.message);
             }
         }
 
-        res.status(200).send({ message: 'Campos personalizados atualizados com sucesso!✅' });
+        res.status(200).send({ message: 'Campos atualizados com sucesso.' });
     } catch (error) {
-        console.error('Update Contact Error:', error.response ? error.response.data : error.message);
-        res.status(500).send({ message: 'Ocorreu um erro ao atualizar os campos personalizados.❌' });
+        console.error('Erro ao consultar/atualizar os dados do ActiveCampaign:', error.response ? error.response.data : error.message);
+        res.status(500).send({ message: 'Erro ao atualizar os dados do contato.' });
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

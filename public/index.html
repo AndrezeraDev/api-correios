@@ -24,73 +24,95 @@
                     <th>Email do Cliente</th>
                     <th>Código de Rastreio</th>
                     <th>Ultima atualização</th>
-                    <th>Log da Mercadoria</th> <!-- Nova coluna adicionada -->
+                    <th>Data e Hora da Última Atualização</th> <!-- Nova coluna -->
+                    <th>Data Prevista de Entrega</th> <!-- Nova coluna -->
+                    <th>Log da Mercadoria</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Linha de exemplo -->
+                <!-- Exemplo de linha -->
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
-                    <td><input type="text" class="log-input" value=""  /></td> <!-- Campo para exibir o log -->
-                </tr>
-                <tr>
-                    <td><input type="text" class="email-input" value="" /></td>
-                    <td><input type="text" class="codigo-input" value="" /></td>
-                    <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
+                    <td><input type="text" class="log-input" value=""  /></td>
+                </tr>
+                    <td><input type="text" class="email-input" value="" /></td>
+                    <td><input type="text" class="codigo-input" value="" /></td>
+                    <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="email-input" value="" /></td>
                     <td><input type="text" class="codigo-input" value="" /></td>
                     <td><input type="text" class="etapa-input" value="" /></td>
+                    <td><input type="datetime-local" class="dtHrCriado-input" value="" /></td> 
+                    <td><input type="datetime-local" class="dataPrevista-input" value="" /></td> 
                     <td><input type="text" class="log-input" value=""  /></td>
                 </tr>
             </tbody>
         </table>
+        <button id="manualRefreshButton" style="display: none;">Atualizar Manualmente</button> <!-- Botão de refresh manual -->
         <!-- Container para o log -->
         <div id="logContainer" style="display: none;">
             <h3>Log do Sistema:</h3>
